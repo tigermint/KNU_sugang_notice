@@ -10,7 +10,7 @@ import time
 import random
 import pandas as pd # 가져온 데이터를 표로 쉽게 보기
 import os
-
+import pyautogui #클릭(좌표)
 
 
 from selenium.webdriver.support.select import Select
@@ -25,7 +25,47 @@ from flask import request
 
 from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER use 
 
-    
+def scrolling(driver):
+    mockcha = ['개설연도', '개설학기', '학년', '교과구분', '개설대학', '개설학과', '강좌번호', '교과목명', '학점', '강의', '실습', '담당교수', '강의시간', '강의사간(실제시간)', '강의실', '호실번호', '수강정원', '수강신청', '수강꾸러미신청', '수강꾸러미신청가능여부', '강의방식', '비고']
+    html = driver.page_source #해당 사이트 정보 가져오기
+    soup = BeautifulSoup(html, 'html.parser')
+    data =  soup.find('table', {'class' : 'gridHeaderTableDefault'})
+
+    randtime = random.uniform(2,3)
+    time.sleep(randtime)
+
+#나머지 것들 가져오기
+    tbody = data.find("tbody")
+    tbody1 = tbody.find_all(class_= 'grid_body_row')
+    print("내용")
+    allinfolist = []
+
+    for all in tbody1:
+        tbody2 = all.find_all("td")
+        A = []
+        for all2 in tbody2:
+            if all2.get_text() != "":
+                A.append(all2.get_text())
+
+            else:
+                A.append("null")
+
+        A = A[:21] 
+        allinfolist.append(A)
+
+    print(allinfolist)
+    print(len(allinfolist))
+
+    for i in range (len(allinfolist)):
+        AA = allinfolist[i]
+        sugangdic[AA[7]] = AA
+
+
+
+
+
+sugangdic = {}
+
 op = web.ChromeOptions()
 op.add_argument('headless')
 op.add_argument('window-size=1920x1080')
@@ -38,6 +78,8 @@ op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/201
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
 driver = web.Chrome()
+driver.set_window_position(0,0) #browser 위치 조정
+driver.maximize_window() #화면 최대화
 
 randtime = random.uniform(1,2)
 time.sleep(randtime)
@@ -61,7 +103,7 @@ selecting2.select_by_visible_text("IT대학");
 
 
 driver.find_element_by_css_selector('#schSbjetCd3').click();
-option = driver.find_element_by_xpath("//*[text()='전자공학부 A']")
+option = driver.find_element_by_xpath("//*[text()='글로벌소프트웨어융합전공']")
 #driver.execute_script("arguments[0].scrollintoView();",option)
 option.click();
 
@@ -71,25 +113,6 @@ driver.find_element_by_css_selector('#btnSearch').click()
 
 randtime = random.uniform(2,3) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
 time.sleep(randtime)
-
-#스크롤 내리기 - 이유 : 스크롤 안 내리면 크롤링을 덜 해옴..
-infolist = driver.find_element_by_xpath("//*[@id='grid01_scrollY_div']")
-
-randtime = random.uniform(1,2)
-time.sleep(randtime)
-
-
-action = web.ActionChains(driver)
-action.move_to_element(infolist).click_and_hold().perform()
-action.move_by_offset(200, 200).perform()
-action.release(infolist).perform()
-
-
-
-
-randtime = random.uniform(2,3)
-time.sleep(randtime)
-
 
 html = driver.page_source #해당 사이트 정보 가져오기
 soup = BeautifulSoup(html, 'html.parser')
@@ -103,27 +126,28 @@ print()
 mokcha = []
 for all in thead1:
     mokcha.append(all.get_text())
+print(mokcha)
 print(len(mokcha))
 
-    
+#스크롤 내리기 - 이유 : 스크롤 안 내리면 크롤링을 덜 해옴..
+driver.execute_script("window.scrollTo(0,900)")
+
+scrollYto = driver.find_element_by_class_name("w2grid_scrollY")
+
 randtime = random.uniform(2,3)
 time.sleep(randtime)
 
-#나머지 것들 가져오기
-tbody = data.find("tbody")
-tbody1 = tbody.find_all(class_= 'grid_body_row')
-print("내용")
-allinfolist = []
-for all in tbody1:
-    tbody2 = all.find_all("td")
-    A = []
-    for all2 in tbody2:
-        if all2.get_text() != "":
-            A.append(all2.get_text())
-        else:
-            A.append("null")
-    A = A[1:] 
-    allinfolist.append(A)
+scrolling(driver)
 
-print(allinfolist)
 
+driver.execute_script("arguments[0].scrollBy(0,420)", scrollYto)
+
+scrolling(driver)
+
+driver.execute_script("arguments[0].scrollBy(0,840)", scrollYto)
+
+scrolling(driver)
+
+print(sugangdic)
+
+os.system("pause")
