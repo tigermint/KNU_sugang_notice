@@ -37,7 +37,6 @@ def scrolling(driver):
 #나머지 것들 가져오기
     tbody = data.find("tbody")
     tbody1 = tbody.find_all(class_= 'grid_body_row')
-    print("내용")
     allinfolist = []
 
     for all in tbody1:
@@ -50,15 +49,18 @@ def scrolling(driver):
             else:
                 A.append("null")
 
-        A = A[:21] 
+        A = A[1:] 
+        for i in range (len(A)):
+            A[i] = mockcha[i] + "/" + A[i]
+
         allinfolist.append(A)
 
-    print(allinfolist)
-    print(len(allinfolist))
+    # print(allinfolist)
+    # print(len(allinfolist))
 
     for i in range (len(allinfolist)):
         AA = allinfolist[i]
-        sugangdic[AA[7]] = AA
+        sugangdic[AA[6]] = AA
 
 
 
@@ -103,7 +105,7 @@ selecting2.select_by_visible_text("IT대학");
 
 
 driver.find_element_by_css_selector('#schSbjetCd3').click();
-option = driver.find_element_by_xpath("//*[text()='글로벌소프트웨어융합전공']")
+option = driver.find_element_by_xpath("//*[text()='전자공학부 B']")
 #driver.execute_script("arguments[0].scrollintoView();",option)
 option.click();
 
