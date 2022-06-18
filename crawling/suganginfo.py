@@ -150,6 +150,10 @@ driver.execute_script("arguments[0].scrollBy(0,840)", scrollYto)
 
 scrolling(driver)
 
-print(sugangdic)
+driver.execute_script("arguments[0].scrollBy(0,1260)", scrollYto)
 
-os.system("pause")
+scrolling(driver)
+
+print(len(sugangdic.keys()))
+
+# os.system("pause")

@@ -10,7 +10,7 @@ import time
 import random
 import os
 
-
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 from elasticsearch import Elasticsearch
 from urllib.request import urlopen
@@ -23,8 +23,8 @@ from flask import request
 from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER use 
 from selenium.webdriver.common.by import By
 
-op = web.ChromeOptions()
-op.add_argument('headless')
+op = Options()
+op.add_argument('--headless')
 op.add_argument('window-size=1920x1080')
 op.add_argument("disable-gpu")
 # op.add_argument("no-sandbox")
@@ -34,9 +34,9 @@ op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/201
 
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-driver = web.Chrome()
-driver.set_window_position(0,0) #browser 위치 조정
-driver.maximize_window() #화면 최대화
+driver = web.Chrome(options=op)
+# driver.set_window_position(0,0) #browser 위치 조정
+# driver.maximize_window() #화면 최대화
 
 randtime = random.uniform(0.5,1)
 time.sleep(randtime)
@@ -94,8 +94,7 @@ for num in data1:
     ratedata = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]")
 
     gangpyeong = []
-    ratenum = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]").text
-    print(ratenum)
+    # ratenum = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]").text
 
 
     if(driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]/span/span[1]").text != "0"):
