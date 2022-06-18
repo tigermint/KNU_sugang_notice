@@ -24,13 +24,14 @@ from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER 
 from selenium.webdriver.common.by import By
 
 op = Options()
-op.add_argument('--headless')
+op.add_argument('headless')
 op.add_argument('window-size=1920x1080')
 op.add_argument("disable-gpu")
 # op.add_argument("no-sandbox")
 # op.add_argument("--disable-dev-shm-usage")
 # op.add_argument("headless") # 창 띄우지 않고 실행하기.
 op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Chrome/102.0.5005.61 Firefox/100.0}")
+op.add_argument('--start-maximized')
 
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
@@ -63,17 +64,17 @@ driver.find_element_by_xpath('//*[@id="container"]/form/input[2]').click()
 
 
 driver.implicitly_wait(10)
-data = driver.find_element_by_class_name('lectures')
+data = len(driver.find_element_by_xpath("//*[@id='container']/div").find_elements_by_tag_name('a'))
 
-data1 = data.find_elements_by_class_name('lecture')
 
 everytimeDic = {}
 
 
-for num in data1:
-
-    num.click()
-    
+for num in range(data):
+    realnum = driver.find_element_by_xpath("//*[@id='container']/div").find_elements_by_tag_name('a')[num]
+    print("1")
+    realnum.click()
+    # time.sleep(1)
     html = driver.page_source #해당 사이트 정보 가져오기
     soup = BeautifulSoup(html, 'html.parser')
     driver.implicitly_wait(10)
@@ -135,11 +136,14 @@ for num in data1:
         gangpyeong.append(article2)
 
     everytimeDic[key] = gangpyeong
-    driver.execute_script("window.history.go(-1)")
+    driver.back()
+    # time.sleep(1)
+    # driver.execute_script("alert('java 코드 적용');")
+    # driver.execute_script("window.history.go(-1)")
     driver.implicitly_wait(10)
 
 
 print(everytimeDic)
 
-
+driver.quit()
 os.system("pause")

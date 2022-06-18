@@ -12,7 +12,7 @@ import pandas as pd # 가져온 데이터를 표로 쉽게 보기
 import os
 import pyautogui #클릭(좌표)
 
-
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 from elasticsearch import Elasticsearch
 from urllib.request import urlopen
@@ -68,20 +68,20 @@ def scrolling(driver):
 
 sugangdic = {}
 
-op = web.ChromeOptions()
-op.add_argument('headless')
+op = Options()
+
+op.add_argument('--headless')
 op.add_argument('window-size=1920x1080')
 op.add_argument("disable-gpu")
 # op.add_argument("no-sandbox")
 # op.add_argument("--disable-dev-shm-usage")
 # op.add_argument("headless") # 창 띄우지 않고 실행하기.
 op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Chrome/102.0.5005.61 Firefox/100.0}")
-
+op.add_argument('--start-maximized')
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-driver = web.Chrome()
-driver.set_window_position(0,0) #browser 위치 조정
-driver.maximize_window() #화면 최대화
+driver = web.Chrome(options=op)
+
 
 randtime = random.uniform(1,2)
 time.sleep(randtime)
@@ -155,5 +155,7 @@ driver.execute_script("arguments[0].scrollBy(0,1260)", scrollYto)
 scrolling(driver)
 
 print(len(sugangdic.keys()))
+
+driver.quit()
 
 # os.system("pause")
