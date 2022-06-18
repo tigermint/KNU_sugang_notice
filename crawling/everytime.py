@@ -21,6 +21,7 @@ from flask import render_template
 from flask import request
 
 from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER use 
+from selenium.webdriver.common.by import By
 
 op = web.ChromeOptions()
 op.add_argument('headless')
@@ -37,16 +38,16 @@ driver = web.Chrome()
 driver.set_window_position(0,0) #browser 위치 조정
 driver.maximize_window() #화면 최대화
 
-randtime = random.uniform(1,2)
+randtime = random.uniform(0.5,1)
 time.sleep(randtime)
 driver.get("https://everytime.kr/login")
-randtime = random.uniform(1,2)
+randtime = random.uniform(0.5,1)
 time.sleep(randtime)
 
 driver.find_element_by_name('userid').send_keys('2000sdh')
 driver.find_element_by_name('password').send_keys('gm778899')
 
-randtime = random.uniform(1,2)
+randtime = random.uniform(0.5,1)
 time.sleep(randtime)
 
 driver.find_element_by_xpath('//*[@id="container"]/form/p[3]/input').click()
@@ -55,15 +56,91 @@ driver.find_element_by_xpath('//*[@id="menu"]/li[3]').click()
 
 driver.find_element_by_xpath('//*[@id="container"]/form/input[1]').send_keys('자바프로그래밍')
 
+randtime = random.uniform(0.5,1)
+time.sleep(randtime)
+
 driver.find_element_by_xpath('//*[@id="container"]/form/input[2]').click()
 
-html = driver.page_source #해당 사이트 정보 가져오기
-soup = BeautifulSoup(html, 'html.parser')
+
+driver.implicitly_wait(10)
+data = driver.find_element_by_class_name('lectures')
+
+data1 = data.find_elements_by_class_name('lecture')
+
+everytimeDic = {}
 
 
-data =  soup.find('div' , {'class' : 'lectures'})
-randtime = random.uniform(1,2)
-time.sleep(randtime)
-print(data)
+for num in data1:
+
+    num.click()
+    
+    html = driver.page_source #해당 사이트 정보 가져오기
+    soup = BeautifulSoup(html, 'html.parser')
+    driver.implicitly_wait(10)
+    data11 = driver.find_element_by_xpath("//*[@id='container']/div[2]")
+    driver.implicitly_wait(10)
+
+    lectureinfo_tag = data11.find_element_by_tag_name('h2')
+    lectureinfo = lectureinfo_tag.text
+    professorinfo_tag1 = data11.find_element_by_tag_name('p')
+    professorinfo_tag2 = professorinfo_tag1.find_element_by_tag_name("span")
+    professorinfo = professorinfo_tag2.text
+
+
+    key = lectureinfo + "-" + professorinfo
+
+    driver.implicitly_wait(10)
+
+    ratedata = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]")
+
+    gangpyeong = []
+    ratenum = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]").text
+    print(ratenum)
+
+
+    if(driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]/span/span[1]").text != "0"):
+        detailinfo = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[2]")
+        detailinfo1 = detailinfo.find_elements_by_tag_name("p")
+        for all in detailinfo1:
+            title = all.find_element_by_tag_name("label").text
+            whatsin = all.find_element_by_tag_name("span").text
+            gangpyeong.append(title + "-" +whatsin)
+
+    else:
+        gangpyeong.append("등록된 강의정보가 없습니다.")
+
+
+    byeoljeom = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]/span/span[1]").text
+    gangpyeong.append("별점 : " + byeoljeom)
+
+    article = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[2]")
+    # article.findElement(By.TAG_NAME, "article").isDisplayed()
+    if(driver.find_element_by_xpath("//*[@id='container']/div[4]/div[1]/div[1]").text != "0"):
+        article1 = article.find_elements_by_tag_name("article")
+        cnt = 1
+        for all in article1:
+            if(cnt < 6): #강의평 5개 이하로 크롤링해오기
+                newall = all.find_elements_by_tag_name("p")
+                for all2 in newall:
+                    aaaaa = all2.text
+                    if(aaaaa != ""):
+                        gangpyeong.append(aaaaa)
+                    else:
+                        continue
+                cnt = cnt + 1
+            else:
+                break
+
+    else:
+        article2 = driver.find_element_by_xpath("//*[@id='container']/div[4]/div[2]").text
+        gangpyeong.append(article2)
+
+    everytimeDic[key] = gangpyeong
+    driver.execute_script("window.history.go(-1)")
+    driver.implicitly_wait(10)
+
+
+print(everytimeDic)
+
 
 os.system("pause")
