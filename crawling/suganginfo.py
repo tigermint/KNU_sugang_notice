@@ -95,19 +95,19 @@ time.sleep(randtime)
 # driver.find_element_by_xpath('//*[@id="schSbjetCd2"]/option[16]').click()
 
 selecting = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd1"]'))
-selecting.select_by_visible_text("대학");
+selecting.select_by_visible_text("대학")
 
 randtime = random.uniform(0,1)
 time.sleep(randtime)
 
 selecting2 = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd2"]'))
-selecting2.select_by_visible_text("IT대학");
+selecting2.select_by_visible_text("IT대학")
 
 
-driver.find_element_by_css_selector('#schSbjetCd3').click();
+driver.find_element_by_css_selector('#schSbjetCd3').click()
 option = driver.find_element_by_xpath("//*[text()='전자공학부 B']")
 #driver.execute_script("arguments[0].scrollintoView();",option)
-option.click();
+option.click()
 
 #selecting3 = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd3"]'))
 #selecting3.select_by_visible_text("글로벌소프트웨어융합전공");
