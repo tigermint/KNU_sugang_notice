@@ -31,7 +31,7 @@ def scrolling(driver):
     soup = BeautifulSoup(html, 'html.parser')
     data =  soup.find('table', {'class' : 'gridHeaderTableDefault'})
 
-    randtime = random.uniform(2,3)
+    randtime = random.uniform(0.5,1)
     time.sleep(randtime)
 
 #나머지 것들 가져오기
@@ -83,10 +83,10 @@ op.add_argument('--start-maximized')
 driver = web.Chrome(options=op)
 
 
-randtime = random.uniform(1,2)
+randtime = random.uniform(0.5,1)
 time.sleep(randtime)
 driver.get("https://knuin.knu.ac.kr/public/stddm/lectPlnInqr.knu")
-randtime = random.uniform(1,2)
+randtime = random.uniform(0.5,1)
 time.sleep(randtime)
 
 #dropbox click
@@ -113,7 +113,7 @@ option.click();
 #selecting3.select_by_visible_text("글로벌소프트웨어융합전공");
 driver.find_element_by_css_selector('#btnSearch').click()
 
-randtime = random.uniform(2,3) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
+randtime = random.uniform(1,2) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
 time.sleep(randtime)
 
 html = driver.page_source #해당 사이트 정보 가져오기
@@ -136,7 +136,7 @@ driver.execute_script("window.scrollTo(0,900)")
 
 scrollYto = driver.find_element_by_class_name("w2grid_scrollY")
 
-randtime = random.uniform(2,3)
+randtime = random.uniform(1,2)
 time.sleep(randtime)
 
 scrolling(driver)
