@@ -8,15 +8,12 @@ import requests
 import urllib.request
 import time
 import random
-import pandas as pd # 가져온 데이터를 표로 쉽게 보기
 import os
-import pyautogui #클릭(좌표)
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 from elasticsearch import Elasticsearch
 from urllib.request import urlopen
-from html_table_parser import parser_functions as parser # table crawling
 # 사용 전에 파이썬 패키지 설치 (pip install html_table_parser)
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify
@@ -79,8 +76,8 @@ op.add_argument("disable-gpu")
 op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Chrome/102.0.5005.61 Firefox/100.0}")
 op.add_argument('--start-maximized')
 
-#driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-driver = web.Chrome(options=op)
+driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
+# driver = web.Chrome(options=op)
 
 
 randtime = random.uniform(0.5,1)

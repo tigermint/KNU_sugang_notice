@@ -35,7 +35,7 @@ op.add_argument('--start-maximized')
 
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-driver = web.Chrome(options=op)
+driver = web.Chrome(executable_path='/home/shin/chromedriver', options=op)
 # driver.set_window_position(0,0) #browser 위치 조정
 # driver.maximize_window() #화면 최대화
 
