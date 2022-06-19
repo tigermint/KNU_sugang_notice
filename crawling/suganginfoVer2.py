@@ -118,10 +118,8 @@ def searching(lecturename): #강의명 받아와서 검색하기
         del sugangdic["강좌번호/null"]
 
 
-    print(sugangdic)
-
     driver.quit()
+    return sugangdic
 
 
-searching("자료구조")
 # os.system("pause")
