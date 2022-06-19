@@ -3,21 +3,14 @@
 
 
 
-# import re
-# import requests
-# import urllib.request
+
 import time
 import random
-# import os
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
-# from urllib.request import urlopen
 # 사용 전에 파이썬 패키지 설치 (pip install html_table_parser)
 from bs4 import BeautifulSoup
-# from flask import Flask, jsonify
-# from flask import render_template
-# from flask import request
 
 from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER use 
 
@@ -54,35 +47,13 @@ def scrolling(driver):
 
         allinfolist.append(A)
 
-    # print(allinfolist)
-    # print(len(allinfolist))
-
     for i in range (len(allinfolist)):
         AA = allinfolist[i]
         sugangdic[AA[6]] = AA
 
 
-# op = Options()
-# op.add_argument('window-size=1920x1080')
-# op.add_argument("disable-gpu")
-# # op.add_argument("no-sandbox")
-# # op.add_argument("--disable-dev-shm-usage")
-# op.add_argument("headless") # 창 띄우지 않고 실행하기.
-# op.add_argument("user-agent={Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Chrome/102.0.5005.61 Firefox/100.0}")
-# op.add_argument('--start-maximized')
 
-# # driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-# driver = web.Chrome(options=op)
-
-
-# randtime = random.uniform(0,1)
-# time.sleep(randtime)
-# driver.get("https://knuin.knu.ac.kr/public/stddm/lectPlnInqr.knu")
-# randtime = random.uniform(0,1)
-# time.sleep(randtime)
-
-
-def searching(lecturename):
+def searching(lecturename): #강의명 받아와서 검색하기
 
     op = Options()
     op.add_argument('window-size=1920x1080')
@@ -115,7 +86,7 @@ def searching(lecturename):
 
     html = driver.page_source #해당 사이트 정보 가져오기
     soup = BeautifulSoup(html, 'html.parser')
-    data =  soup.find('table', {'class' : 'gridHeaderTableDefault'})
+    # data =  soup.find('table', {'class' : 'gridHeaderTableDefault'})
     randtime = random.uniform(1.5,2.5) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
     time.sleep(randtime)
     #가져올 값들이 몇 개 존재하는지 알아보기
