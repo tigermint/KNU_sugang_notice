@@ -47,7 +47,6 @@ def scrolling(driver):
                 A.append("null")
 
         A = A[1:] 
-        print(len(A))
         for i in range (len(A)):
             A[i] = mockcha[i] + "/" + A[i]
 
@@ -60,6 +59,9 @@ def scrolling(driver):
         AA = allinfolist[i]
         sugangdic[AA[6]] = AA
 
+    
+         
+
 
 
 
@@ -67,8 +69,6 @@ def scrolling(driver):
 sugangdic = {}
 
 op = Options()
-
-op.add_argument('--headless')
 op.add_argument('window-size=1920x1080')
 op.add_argument("disable-gpu")
 # op.add_argument("no-sandbox")
@@ -81,76 +81,56 @@ op.add_argument('--start-maximized')
 driver = web.Chrome(options=op)
 
 
-randtime = random.uniform(0.5,1)
+randtime = random.uniform(0,1)
 time.sleep(randtime)
 driver.get("https://knuin.knu.ac.kr/public/stddm/lectPlnInqr.knu")
-randtime = random.uniform(0.5,1)
-time.sleep(randtime)
-
-#dropbox click
-
-#driver.find_element_by_xpath('//*[@id="schSbjetCd1"]/option[6]').click() #elements가 아닌 element
-# driver.find_element_by_xpath('//*[@id="schSbjetCd2"]/option[16]').click()
-
-selecting = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd1"]'))
-selecting.select_by_visible_text("대학")
-
 randtime = random.uniform(0,1)
 time.sleep(randtime)
 
-selecting2 = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd2"]'))
-selecting2.select_by_visible_text("IT대학")
+
+selecting = Select(driver.find_element_by_xpath('//*[@id="schCode"]'))
+selecting.select_by_visible_text("교과목명")
+
+driver.find_element_by_id("schCodeContents").send_keys("자료구조")
+#html에서 입력받은 값을 send_keys할 것임
 
 
-driver.find_element_by_css_selector('#schSbjetCd3').click()
-option = driver.find_element_by_xpath("//*[text()='전자공학부 B']")
-#driver.execute_script("arguments[0].scrollintoView();",option)
-option.click()
-
-#selecting3 = Select(driver.find_element_by_xpath('//*[@id="schSbjetCd3"]'))
-#selecting3.select_by_visible_text("글로벌소프트웨어융합전공");
 driver.find_element_by_css_selector('#btnSearch').click()
-
-randtime = random.uniform(1,2) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
-time.sleep(randtime)
+driver.implicitly_wait(10)
 
 html = driver.page_source #해당 사이트 정보 가져오기
 soup = BeautifulSoup(html, 'html.parser')
 data =  soup.find('table', {'class' : 'gridHeaderTableDefault'})
-
-#table 목차 가져오기
-thead = data.find(class_= 'gridHeaderTableDefault')
-thead1 = thead.find_all(class_= 'w2grid_head_sort_div_main w2grid_head_sort_none')
-print("목차")
-print()
-mokcha = []
-for all in thead1:
-    mokcha.append(all.get_text())
-print(mokcha)
-print(len(mokcha))
+randtime = random.uniform(1.5,2.5) #창이 빠르게 닫기면 크롤링을 못 해오는 경우가 있어 방지하기 위해 sleep 걸음
+time.sleep(randtime)
+#가져올 값들이 몇 개 존재하는지 알아보기
+what = driver.find_element_by_xpath("//*[@id='wq_uuid_93_lblCount']").text
+numwhat = int(what)
+print(numwhat)
 
 #스크롤 내리기 - 이유 : 스크롤 안 내리면 크롤링을 덜 해옴..
 driver.execute_script("window.scrollTo(0,900)")
 
 scrollYto = driver.find_element_by_class_name("w2grid_scrollY")
 
-randtime = random.uniform(1,2)
-time.sleep(randtime)
+scrolling(driver) #한번 크롤링 실행
 
-scrolling(driver)
+scrollnum = 0
+while(len(sugangdic) <= numwhat): #딕셔너리가 가져와야 할 값보다 작거나같으면(같은 경우를 넣어준 이유는 처음에 가끔 데이터를 이상하게 받아와서임)
+    driver.execute_script("arguments[0].scrollBy(0,{0})".format(scrollnum + 420), scrollYto)
+    #페이지가 스크롤 내릴 때 마다 동적으로 데이터를 가져오므로, 수동으로 일정 부분 늘려서 데이터 가져온다.
+    scrolling(driver)
+    if(len(sugangdic) > numwhat):
+        break
 
+#페이지가 동적으로 움직이기 때문에 일어나는 오류 
+#맨 마지막임을 알리기 위해 html에서 tag는 같지만 안의 값을 모두 ""로
+#설정해놓아 항상 마지막에 'null'이 출력되게 된다.
+#따라서 key값이 "강좌번호/null" 과 일치하면, 딕셔너리에서 삭제할 것이다.
 
-driver.execute_script("arguments[0].scrollBy(0,420)", scrollYto)
+if "강좌번호/null" in sugangdic:
+    del sugangdic["강좌번호/null"]
 
-scrolling(driver)
-
-driver.execute_script("arguments[0].scrollBy(0,840)", scrollYto)
-
-scrolling(driver)
-
-driver.execute_script("arguments[0].scrollBy(0,1260)", scrollYto)
-
-scrolling(driver)
 
 print(sugangdic)
 
