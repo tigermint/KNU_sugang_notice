@@ -3,25 +3,23 @@
 
 
 
-import re
-import requests
-import urllib.request
+
 import time
 import random
 import os
 
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.select import Select
-from elasticsearch import Elasticsearch
-from urllib.request import urlopen
+# from selenium.webdriver.support.select import Select
+# from elasticsearch import Elasticsearch
+# from urllib.request import urlopen
 # 사용 전에 파이썬 패키지 설치 (pip install html_table_parser)
 from bs4 import BeautifulSoup
-from flask import Flask, jsonify
-from flask import render_template
-from flask import request
+# from flask import Flask, jsonify
+# from flask import render_template
+# from flask import request
 
 from selenium import webdriver as web #웹 자동클릭 구현 위한 WEBDRIVER use 
-from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.by import By
 
 op = Options()
 op.add_argument('headless')
@@ -35,7 +33,8 @@ op.add_argument('--start-maximized')
 
 
 #driver = web.Chrome(executable_path='/home/shin/chromedriver', options = op) # in ubuntu
-driver = web.Chrome(executable_path='/home/shin/chromedriver', options=op)
+# driver = web.Chrome(executable_path='/home/shin/chromedriver', options=op)
+driver = web.Chrome(options=op)
 # driver.set_window_position(0,0) #browser 위치 조정
 # driver.maximize_window() #화면 최대화
 
