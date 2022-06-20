@@ -1,48 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>OSP Team6</title>
     <style>
-      body{
-        margin:0px; padding:5px;
-        }
-      .header{ margin:0px; padding:5px; height:100px;border-bottom: 1px solid;}
-      .footer {margin:0px; padding:5px; height:100px; border-top: 1px solid; }
+      body {
+        width: flex;
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        margin: 0px;
+        padding: 5px;
+        height: 100px;
+        border-bottom: 1px solid;
+      }
+      .footer {
+        margin: 0px;
+        padding: 5px;
+        height: 100px;
+        border-top: 1px solid;
+      }
 
-      .content { margin:0px; padding:5px; height:800px; }
+      .content {
+        margin: 0px;
+        padding: 5px;
+        height: 800px;
+      }
     </style>
   </head>
   <body>
     <div class="header">
-      <img src="/static/sig_logo.jpg">
+      <img src="../static/sig_logo.jpg" />
     </div>
 
     <div class="content">
-      <div class="box" style="font-size: 2em; margin:100px 0px 0px 240px;">
-        <div class="form" style="margin:350px 0px 0px 450px;">
-          <form action="/result" method="POST">
-            &nbsp;&nbsp; 과목명
-            <input name="subject" type="text" size="20" style="height: 20pt" />
-            &nbsp;&nbsp; 과목코드
-            <input name="code" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" size="20" style="height:20pt"/>
-            &nbsp;&nbsp;
-            <input type="submit" name="search" value="검색" style="width: 80pt; height: 30pt;font-size: 20px" />
-          </form>
-        </div>
-        <div class="form" style="margin:0px 0px 0px 450px">
-          <form action="/everytime" method="POST">
-            &nbsp;&nbsp; 과목명
-            <input name="subject" type="text" size="20" style="height: 20pt" />
-            &nbsp;&nbsp; 교수명
-            <input name="professor" type="text"  size="20" style="height:20pt"/>
-            &nbsp;&nbsp;
-            <input type="submit" name="search" value="검색" style="width: 80pt; height: 30pt; font-size: 20px"/>
-          </form>
-        </div>
-      </div>
+      <form action="/result" method="POST">
+        <table align ="center" width="30%" height="20%" style="margin:350px auto;font-size: 25px;">
+          <tr align="center">
+            <td>과목명</td>
+            <td><input name="subject" type="text" size="20" style="height:20pt"/></td>
+            <td>과목코드</td>
+            <td><input name="code" type="text" size="20" style="height:20pt"/></td>
+            <td><input name="search" type="submit" value="검색" style="width: 80pt; height: 30pt; font-size: 20px"/></td>
+          </tr>
+
+          <tr></tr>
+  
+          <tr align="center">
+            <td>과목명</td>
+            <td><input name="subject2" type="text" size="20" style="height:20pt"/></td>
+            <td>교수명</td>
+            <td><input name="professor" type="text" size="20" style="height:20pt" /></td>
+            <td><input name="search2" type="submit" value="검색" style="width: 80pt; height: 30pt; font-size: 20px"/></td>
+          </tr>
+        </table>
+      </form>
     </div>
     <div class="footer"></div>
   </body>
 </html>
-
