@@ -1,0 +1,127 @@
+<!DOCTYPE html lang="ko">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>경북대학교 수강신청 알리미</title>
+    <link
+      rel="shortcut icon"
+      href="../static/favicon.ico"
+      type="image/x-icon"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+
+      }
+      #knu_img {
+        width: 66;
+        height: 68;
+      }
+      #knu_name{
+        padding-top: 17;
+        color: rgb(251, 241, 240);
+        font-size: 32;
+        
+      }
+      #header .header_logo {
+        vertical-align: middle;
+        width: 480px;
+        height: 100px;
+        margin: 0px auto;
+        text-align: center;
+        padding-top: 15px;
+        display: flex;
+   
+      }
+      #header {
+        height: 100px;
+        background-color: rgb(176, 22, 28);
+      }
+      /* 시각화할 데이터 */
+      #content{
+        width: 1022px;
+        margin: 0px auto;
+        margin-top: 40px;
+
+      }
+      #subject{
+        border: 1px solid #bcbcbc;
+        width: 1020px;
+        height: 80px;
+        border-radius: 6px;
+ 
+      }
+      #info{
+        display: flex;
+        margin-top: 20px;
+      }
+      #review{
+        height: 418px;
+        width: 500px;
+ 
+        margin-left: 20px;
+        border: 1px solid #bcbcbc;
+        border-radius: 6px;
+        overflow: auto;
+      }
+      #subject_info{
+        height: 418px;
+        width: 500px;
+       
+        border: 1px solid #bcbcbc;
+        border-radius: 6px;
+
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1 class="header_logo">
+        <img id="knu_img" src="../static/login_logo.png"/>
+        <div id="knu_name"> 경북대학교 수강신청 알리미</h1>
+      </h1>
+    </div>
+    <div id="main">
+      <div id="content">
+        <div id="subject">
+          {% if flag %}
+            <h4>검색된 과목이 없습니다</h4>
+          {% else %}
+            <h4>강의명 : {{subject}}</h4>
+            <h5>강좌코드 : {{code}}</h5>
+          {% endif %}
+        </div>
+        <div id="info">
+          <div id="subject_info">
+            <h3>수강 신청 조회</h3>
+            {% if flag %}
+              <h4>검색된 과목이 없습니다</h4>
+            {% else %}
+              <h4>강의명 : {{subject}}</h4>
+              <h4>교수명 : {{prof}}</h4>
+              <h4>학점 : {{credit}}</h4>
+              <h4>강의실 : {{croom}} {{crnum}}호실</h4>
+              <h4>수강인원 : {{student}} / {{personnel}} 명</h4>
+              <h4>강의시간 : {{time}}</h4>
+            {% endif %}
+          </div>       
+          <div id="review">
+            <h3>에브리타임 조회</h3>
+            {% if eflag %}
+              <h4>작성된 후기가 없습니다</h4>
+            {% else %}
+              <h4>과제량 : {{report}}</h4>
+              <h4>조모임 유무 : {{team}}</h4>
+              <h4>별점 : {{score}}점</h4>
+              <h4>강의 리뷰</h4>
+              <p>{{ev1}}</p>
+              <p>{{ev2}}</p>
+              <p>{{ev3}}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
